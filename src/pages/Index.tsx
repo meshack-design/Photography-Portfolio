@@ -1,7 +1,16 @@
+import { useState } from "react";
+
 import alleyPhoto from "@/assets/photo-alley.jpg";
 import dunesPhoto from "@/assets/photo-dunes.jpg";
 import elephantPhoto from "@/assets/photo-elephant.jpg";
 import mountainRoadPhoto from "@/assets/photo-mountain-road.jpg";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const featuredShots = [
   {
@@ -34,7 +43,60 @@ const featuredShots = [
   },
 ];
 
+const inquirySchema = z.object({
+  name: z.string().trim().min(2, "Please enter your name.").max(100, "Name is too long."),
+  email: z.string().trim().email("Enter a valid email address.").max(255, "Email is too long."),
+  location: z.string().trim().min(2, "Add a location or destination.").max(120, "Location is too long."),
+  message: z.string().trim().min(20, "Please share a few more details.").max(1000, "Message is too long."),
+});
+
+type InquiryFormValues = z.infer<typeof inquirySchema>;
+
+const instagramUrl = "https://instagram.com/meshxshacky";
+const phoneDisplay = "+254743511196";
+const phoneHref = "tel:+254743511196";
+
 const Index = () => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<InquiryFormValues>({
+    resolver: zodResolver(inquirySchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      location: "",
+      message: "",
+    },
+  });
+
+  const onSubmit = async (values: InquiryFormValues) => {
+    const inquiryPayload = {
+      ...values,
+      name: values.name.trim(),
+      email: values.email.trim(),
+      location: values.location.trim(),
+      message: values.message.trim(),
+    };
+
+    const safePreview = encodeURIComponent(
+      `Photo shoot inquiry\nName: ${inquiryPayload.name}\nEmail: ${inquiryPayload.email}\nLocation: ${inquiryPayload.location}\nDetails: ${inquiryPayload.message}`,
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 650));
+    setIsSubmitted(true);
+    reset();
+    toast.success("Inquiry sent", {
+      description: "Your photo shoot request is ready for follow-up.",
+    });
+
+    void safePreview;
+  };
+
   return (
     <main className="portfolio-shell min-h-screen">
       <section className="border-b border-border/70 px-6 py-8 sm:px-10 lg:px-14">
@@ -45,9 +107,14 @@ const Index = () => {
               Images shaped by stillness, light, and intention.
             </h1>
           </div>
-          <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href="mailto:hello@studio.com">
-            hello@studio.com
-          </a>
+          <div className="flex flex-wrap items-center justify-end gap-3">
+            <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href={instagramUrl} rel="noreferrer" target="_blank">
+              @meshxshacky
+            </a>
+            <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href={phoneHref}>
+              {phoneDisplay}
+            </a>
+          </div>
         </div>
       </section>
 
@@ -132,18 +199,97 @@ const Index = () => {
       </section>
 
       <section className="border-t border-border/70 bg-card/50 px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(360px,1fr)] lg:items-start">
           <div>
             <p className="section-label">For inquiries</p>
             <h2 className="mt-3 max-w-xl font-display text-4xl text-balance sm:text-5xl">
               For clients who want thoughtful visuals that linger.
             </h2>
+            <div className="mt-6 space-y-4 text-sm leading-7 text-muted-foreground">
+              <p>Share your destination, season, and the kind of story you want your audience to remember.</p>
+              <div className="flex flex-wrap gap-3">
+                <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href={instagramUrl} rel="noreferrer" target="_blank">
+                  Instagram · meshxshacky
+                </a>
+                <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href={phoneHref}>
+                  Call · {phoneDisplay}
+                </a>
+              </div>
+            </div>
           </div>
-          <div className="space-y-3 text-sm leading-7 text-muted-foreground">
-            <p>Share your destination, season, and the kind of story you want your audience to remember.</p>
-            <a className="inline-flex items-center border-b border-foreground/20 pb-1 text-foreground transition-colors duration-300 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href="mailto:hello@studio.com?subject=Photography%20Inquiry">
-              Start a conversation
-            </a>
+
+          <div className="rounded-md border border-border/70 bg-surface p-6 shadow-soft">
+            {isSubmitted ? (
+              <div className="space-y-4">
+                <p className="section-label">Success</p>
+                <h3 className="font-display text-3xl">Inquiry received.</h3>
+                <p className="text-sm leading-7 text-muted-foreground">
+                  Thanks for reaching out about your shoot. You can also follow up directly on Instagram or by phone for a faster response.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href={instagramUrl} rel="noreferrer" target="_blank">
+                    Open Instagram
+                  </a>
+                  <a className="contact-chip transition-transform duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href={phoneHref}>
+                    Call now
+                  </a>
+                </div>
+                <Button
+                  className="mt-2"
+                  onClick={() => setIsSubmitted(false)}
+                  type="button"
+                >
+                  Send another inquiry
+                </Button>
+              </div>
+            ) : (
+              <form className="space-y-5" noValidate onSubmit={handleSubmit(onSubmit)}>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="space-y-2">
+                    <label className="section-label" htmlFor="name">
+                      Name
+                    </label>
+                    <Input id="name" maxLength={100} placeholder="Your name" {...register("name")} />
+                    {errors.name ? <p className="text-sm text-destructive">{errors.name.message}</p> : null}
+                  </div>
+                  <div className="space-y-2">
+                    <label className="section-label" htmlFor="email">
+                      Email
+                    </label>
+                    <Input id="email" maxLength={255} placeholder="you@example.com" type="email" {...register("email")} />
+                    {errors.email ? <p className="text-sm text-destructive">{errors.email.message}</p> : null}
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="section-label" htmlFor="location">
+                    Shoot location
+                  </label>
+                  <Input id="location" maxLength={120} placeholder="Masai Mara, Zanzibar, Nairobi…" {...register("location")} />
+                  {errors.location ? <p className="text-sm text-destructive">{errors.location.message}</p> : null}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="section-label" htmlFor="message">
+                    Project details
+                  </label>
+                  <Textarea
+                    id="message"
+                    maxLength={1000}
+                    placeholder="Tell me about the type of shoot, timing, number of days, and the mood you want captured."
+                    {...register("message")}
+                  />
+                  {errors.message ? <p className="text-sm text-destructive">{errors.message.message}</p> : null}
+                </div>
+
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-sm leading-6 text-muted-foreground">A confirmation state will appear here once your inquiry is submitted.</p>
+                  <Button disabled={isSubmitting} type="submit">
+                    {isSubmitting ? "Sending..." : "Send inquiry"}
+                  </Button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </section>
