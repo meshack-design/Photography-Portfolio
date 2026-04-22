@@ -1,9 +1,7 @@
 import alleyPhoto from "@/assets/photo-alley.jpg";
 import dunesPhoto from "@/assets/photo-dunes.jpg";
 import elephantPhoto from "@/assets/photo-elephant.jpg";
-import facadePhoto from "@/assets/photo-facade.jpg";
 import mountainRoadPhoto from "@/assets/photo-mountain-road.jpg";
-import olivePhoto from "@/assets/photo-olive.jpg";
 
 const featuredShots = [
   {
@@ -142,7 +140,7 @@ const Index = () => {
             </h2>
           </div>
           <div className="space-y-3 text-sm leading-7 text-muted-foreground">
-            <p>Share your date, location, and the atmosphere you want to hold onto.</p>
+            <p>Share your destination, season, and the kind of story you want your audience to remember.</p>
             <a className="inline-flex items-center border-b border-foreground/20 pb-1 text-foreground transition-colors duration-300 hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background" href="mailto:hello@studio.com?subject=Photography%20Inquiry">
               Start a conversation
             </a>
