@@ -1,6 +1,8 @@
 import alleyPhoto from "@/assets/photo-alley.jpg";
 import dunesPhoto from "@/assets/photo-dunes.jpg";
+import elephantPhoto from "@/assets/photo-elephant.jpg";
 import facadePhoto from "@/assets/photo-facade.jpg";
+import mountainRoadPhoto from "@/assets/photo-mountain-road.jpg";
 import olivePhoto from "@/assets/photo-olive.jpg";
 
 const featuredShots = [
@@ -12,24 +14,24 @@ const featuredShots = [
     orientation: "portrait",
   },
   {
-    src: dunesPhoto,
-    alt: "Soft coastal dunes with grasses beside a calm sea.",
-    title: "Tide Line",
-    detail: "Landscape · Soft horizon",
+    src: elephantPhoto,
+    alt: "Elephant walking through warm savannah light with dust in the air.",
+    title: "Savannah Passage",
+    detail: "Wildlife · Golden hour",
     orientation: "landscape",
   },
   {
-    src: facadePhoto,
-    alt: "Minimal architectural facade with terracotta walls and long shadows.",
-    title: "Form & Shadow",
-    detail: "Architecture · Structure",
+    src: mountainRoadPhoto,
+    alt: "Winding mountain road overlooking a dramatic valley at sunrise.",
+    title: "Road Into Silence",
+    detail: "Travel · Mountain route",
     orientation: "portrait",
   },
   {
-    src: olivePhoto,
-    alt: "Olive branches in soft sunlight with delicate depth of field.",
-    title: "Olive Quiet",
-    detail: "Nature · Texture",
+    src: dunesPhoto,
+    alt: "Soft coastal dunes with grasses beside a calm sea.",
+    title: "Tide Line",
+    detail: "Travel · Coastline",
     orientation: "landscape",
   },
 ];
@@ -55,12 +57,12 @@ const Index = () => {
         <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:items-end">
           <div className="space-y-8">
             <p className="max-w-xl text-lg leading-8 text-muted-foreground sm:text-xl">
-              A minimal collection for brands, spaces, and people who value atmosphere without excess.
+              A minimal collection of wildlife encounters and slow travel moments, shaped for clients who value atmosphere without excess.
             </p>
             <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+              <span className="contact-chip">Wildlife</span>
+              <span className="contact-chip">Travel</span>
               <span className="contact-chip">Editorial</span>
-              <span className="contact-chip">Architecture</span>
-              <span className="contact-chip">Lifestyle</span>
             </div>
           </div>
 
@@ -68,18 +70,18 @@ const Index = () => {
             <div>
               <p className="section-label">Approach</p>
               <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                Clean composition, measured color, and natural pacing designed to hold attention and earn trust.
+                Quiet observation, natural color, and clean composition designed to keep the focus on place, movement, and presence.
               </p>
             </div>
             <div>
               <p className="section-label">Availability</p>
               <p className="mt-3 text-sm leading-7 text-muted-foreground">
-                Select commissions, brand campaigns, and private client work.
+                Select tourism campaigns, safari lodges, editorial features, and private commissions.
               </p>
             </div>
             <div className="animate-drift motion-reduce:animate-none">
               <p className="section-label">Based in</p>
-              <p className="mt-3 text-sm leading-7 text-muted-foreground">Available worldwide for purposeful visual stories.</p>
+              <p className="mt-3 text-sm leading-7 text-muted-foreground">Available worldwide for wildlife expeditions and thoughtful travel stories.</p>
             </div>
           </div>
         </div>
@@ -93,7 +95,7 @@ const Index = () => {
               <h2 className="mt-3 font-display text-4xl sm:text-5xl">A calm, client-facing edit.</h2>
             </div>
             <p className="hidden max-w-sm text-sm leading-7 text-muted-foreground md:block">
-              Simple, immersive presentation lets the photographs lead while the page remains polished and memorable.
+              Simple, immersive presentation lets the landscapes and wildlife lead while the page stays polished and memorable.
             </p>
           </div>
 
